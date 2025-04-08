@@ -39,11 +39,6 @@ export function SignInForm(props: React.ComponentProps<"div">) {
                   className="bg-white placeholder:font-extralight focus:outline-1 focus:outline-sky-500 focus:outline-solid focus-visible:ring-0"
                 />
               </div>
-              <div className="after:border-border relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t">
-                <span className="text-muted-foreground relative z-10 bg-gray-100 px-2">
-                  Or continue with
-                </span>
-              </div>
               <div className="flex flex-col gap-3">
                 <Button
                   type="submit"
@@ -51,6 +46,11 @@ export function SignInForm(props: React.ComponentProps<"div">) {
                 >
                   Login
                 </Button>
+                <div className="after:border-border relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t">
+                  <span className="text-muted-foreground relative z-10 bg-gray-100 px-2">
+                    Or continue with
+                  </span>
+                </div>
                 <Button
                   className="w-full bg-gray-600 text-white hover:bg-gray-700 hover:text-white active:bg-gray-800 active:text-white"
                   asChild
