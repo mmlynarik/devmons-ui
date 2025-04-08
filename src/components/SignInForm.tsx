@@ -1,8 +1,8 @@
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { cn } from "@/lib/utils";
+import {Button} from "@/components/ui/button";
+import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
+import {Input} from "@/components/ui/input";
+import {Label} from "@/components/ui/label";
+import {cn} from "@/lib/utils";
 
 export function SignInForm({className, ...props}: React.ComponentProps<"div">) {
   return (
@@ -19,10 +19,10 @@ export function SignInForm({className, ...props}: React.ComponentProps<"div">) {
                 <Input
                   id="email"
                   type="text"
-                  placeholder="john.firth@example.com"
+                  placeholder="Enter your email"
                   required
                   autoFocus
-                  className="bg-white focus-visible:ring-0 focus:outline-1 focus:outline-sky-500 focus:outline-solid"
+                  className="bg-white placeholder:font-extralight focus:outline-1 focus:outline-sky-500 focus:outline-solid focus-visible:ring-0"
                 />
               </div>
               <div className="grid gap-3">
@@ -32,8 +32,9 @@ export function SignInForm({className, ...props}: React.ComponentProps<"div">) {
                 <Input
                   id="password"
                   type="password"
+                  placeholder="Enter your password"
                   required
-                  className="bg-white focus-visible:ring-0 focus:outline-1 focus:outline-sky-500 focus:outline-solid"
+                  className="bg-white placeholder:font-extralight focus:outline-1 focus:outline-sky-500 focus:outline-solid focus-visible:ring-0"
                 />
               </div>
               <div className="flex flex-col gap-3">
