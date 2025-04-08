@@ -2,7 +2,9 @@ import {Button} from "@/components/ui/button";
 import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
 import {Input} from "@/components/ui/input";
 import {Label} from "@/components/ui/label";
+import {GitHubIcon} from "@/icons/github";
 import {cn} from "@/lib/utils";
+import Link from "next/link";
 
 export function SignInForm({className, ...props}: React.ComponentProps<"div">) {
   return (
@@ -37,6 +39,11 @@ export function SignInForm({className, ...props}: React.ComponentProps<"div">) {
                   className="bg-white placeholder:font-extralight focus:outline-1 focus:outline-sky-500 focus:outline-solid focus-visible:ring-0"
                 />
               </div>
+              <div className="after:border-border relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t">
+                <span className="text-muted-foreground relative z-10 bg-gray-100 px-2">
+                  Or continue with
+                </span>
+              </div>
               <div className="flex flex-col gap-3">
                 <Button
                   type="submit"
@@ -44,8 +51,14 @@ export function SignInForm({className, ...props}: React.ComponentProps<"div">) {
                 >
                   Login
                 </Button>
-                <Button variant="outline" className="w-full">
-                  Sign in with Github
+                <Button className="w-full bg-gray-600 text-white hover:bg-gray-700 hover:text-white active:bg-gray-800 active:text-white" asChild>
+                  <Link
+                    href="https://www.github.com"
+                    className="flex items-center gap-3"
+                  >
+                    <span className="fill-current"><GitHubIcon /></span>
+                    Sign in with Github
+                  </Link>
                 </Button>
               </div>
             </div>
