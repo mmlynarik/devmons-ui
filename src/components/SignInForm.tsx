@@ -6,9 +6,9 @@ import {GitHubIcon} from "@/icons/github";
 import {cn} from "@/lib/utils";
 import Link from "next/link";
 
-export function SignInForm({className, ...props}: React.ComponentProps<"div">) {
+export function SignInForm(props: React.ComponentProps<"div">) {
   return (
-    <div className={cn("flex flex-col gap-6", className)} {...props}>
+    <div className={cn("flex flex-col gap-6")} {...props}>
       <Card className="bg-gray-100">
         <CardHeader>
           <CardTitle className="text-center text-3xl">Sign in</CardTitle>
@@ -51,13 +51,18 @@ export function SignInForm({className, ...props}: React.ComponentProps<"div">) {
                 >
                   Login
                 </Button>
-                <Button className="w-full bg-gray-600 text-white hover:bg-gray-700 hover:text-white active:bg-gray-800 active:text-white" asChild>
+                <Button
+                  className="w-full bg-gray-600 text-white hover:bg-gray-700 hover:text-white active:bg-gray-800 active:text-white"
+                  asChild
+                >
                   <Link
                     href="https://www.github.com"
                     className="flex items-center gap-3"
                   >
-                    <span className="fill-current"><GitHubIcon /></span>
-                    Sign in with Github
+                    <span className="fill-current">
+                      <GitHubIcon />
+                    </span>
+                    <span>Sign in with Github</span>
                   </Link>
                 </Button>
               </div>
