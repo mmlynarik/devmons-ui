@@ -5,9 +5,9 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { FormButton } from "./FormButton";
+import {Input} from "@/components/ui/input";
+import {Label} from "@/components/ui/label";
+import {FormButton} from "./FormButton";
 import GithubButton from "./GithubButton";
 import SignInOrLine from "./SignInOrLine";
 import Link from "next/link";
@@ -19,32 +19,30 @@ export function SignInForm() {
                 <CardTitle className="text-center text-3xl">Sign in</CardTitle>
             </CardHeader>
             <CardContent>
-                <form>
-                    <div className="flex flex-col gap-6">
-                        <div className="grid gap-3">
-                            <Label htmlFor="email">Email</Label>
-                            <Input
-                                id="email"
-                                type="email"
-                                placeholder="Enter your email"
-                                required
-                                autoFocus
-                            />
-                        </div>
-                        <div className="grid gap-3">
-                            <Label htmlFor="password">Password</Label>
-                            <Input
-                                id="password"
-                                type="password"
-                                placeholder="Enter your password"
-                                required
-                            />
-                        </div>
-                        <div className="grid gap-3">
-                            <FormButton name="Sign in" />
-                            <SignInOrLine />
-                            <GithubButton />
-                        </div>
+                <form className="flex flex-col gap-6">
+                    <div className="grid gap-3">
+                        <Label htmlFor="email">Email</Label>
+                        <Input
+                            id="email"
+                            type="email"
+                            placeholder="Enter your email"
+                            required
+                            autoFocus
+                        />
+                    </div>
+                    <div className="grid gap-3">
+                        <Label htmlFor="password">Password</Label>
+                        <Input
+                            id="password"
+                            type="password"
+                            placeholder="Enter your password"
+                            required
+                        />
+                    </div>
+                    <div className="grid gap-3">
+                        <FormButton name="Sign in" />
+                        <SignInOrLine />
+                        <GithubButton />
                     </div>
                 </form>
             </CardContent>
