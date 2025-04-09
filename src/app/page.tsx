@@ -1,5 +1,5 @@
 import NextImageLink from "@/components/NextImageLink";
-import { SignInForm } from "@/components/SignInForm";
+import {SignInForm} from "@/components/SignInForm";
 
 export default function Home() {
     return (
