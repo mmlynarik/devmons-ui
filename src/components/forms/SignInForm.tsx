@@ -40,7 +40,7 @@ export function SignInForm() {
                             />
                         </div>
                         <div className="grid gap-3">
-                            <FormButton />
+                            <FormButton name="Sign in" />
                             <SignInOrLine />
                             <GithubButton />
                         </div>
