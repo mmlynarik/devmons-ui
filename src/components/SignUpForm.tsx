@@ -37,6 +37,15 @@ export default function SignUpForm() {
                             required
                         />
                     </div>
+                    <div className="grid gap-3">
+                        <Label htmlFor="password">Confirm password</Label>
+                        <Input
+                            id="password"
+                            type="password"
+                            placeholder="Repeat your password"
+                            required
+                        />
+                    </div>
                     <FormButton name="Sign up" />
                 </form>
             </CardContent>
