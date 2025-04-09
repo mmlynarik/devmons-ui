@@ -10,6 +10,7 @@ import { Label } from "@/components/ui/label";
 import { FormButton } from "./FormButton";
 import GithubButton from "./GithubButton";
 import SignInOrLine from "./SignInOrLine";
+import Link from "next/link";
 
 export function SignInForm() {
     return (
@@ -48,10 +49,10 @@ export function SignInForm() {
                 </form>
             </CardContent>
             <CardFooter className="flex justify-center gap-1 text-sm">
-                Don&apos;t have an account?{" "}
-                <a href="#" className="underline underline-offset-4">
+                Don&apos;t have an account?
+                <Link href="#" className="underline underline-offset-4">
                     Sign up
-                </a>
+                </Link>
             </CardFooter>
         </Card>
     );
