@@ -9,7 +9,7 @@ export default function Home() {
         <h1 className="items-center justify-center text-3xl">
           Welcome to Virtual Crypto Exchange
         </h1>
-        <SignInForm className="w-[320px]"> </SignInForm>
+        <SignInForm />
       </main>
 
       <footer className="row-start-3 flex justify-center">
