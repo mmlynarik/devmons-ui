@@ -8,8 +8,6 @@ import {
 import {Input} from "@/components/ui/input";
 import {Label} from "@/components/ui/label";
 import FormButton from "./FormButton";
-import GithubButton from "./GithubButton";
-import SignInOrLine from "./SignInOrLine";
 import Link from "next/link";
 
 export default function SignUpForm() {
@@ -39,11 +37,7 @@ export default function SignUpForm() {
                             required
                         />
                     </div>
-                    <div className="grid gap-3">
-                        <FormButton name="Sign up" />
-                        <SignInOrLine />
-                        <GithubButton />
-                    </div>
+                    <FormButton name="Sign up" />
                 </form>
             </CardContent>
             <CardFooter className="flex justify-center gap-1 text-sm">
