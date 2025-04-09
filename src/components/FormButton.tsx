@@ -5,7 +5,7 @@ type FormButterProps = {
     name: string;
 };
 
-export function FormButton(props: FormButterProps) {
+export default function FormButton(props: FormButterProps) {
     return (
         <Button
             type="submit"
