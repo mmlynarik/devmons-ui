@@ -1,6 +1,6 @@
 import { GitHubIcon } from "@/icons/github";
 import Link from "next/link";
-import { Button } from "../ui/button";
+import { Button } from "./ui/button";
 
 export default function GithubButton() {
     return (
