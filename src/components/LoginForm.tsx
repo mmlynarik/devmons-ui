@@ -7,16 +7,16 @@ import {
 } from "@/components/ui/card";
 import {Input} from "@/components/ui/input";
 import {Label} from "@/components/ui/label";
+import Link from "next/link";
 import FormButton from "./FormButton";
 import GithubButton from "./GithubButton";
 import SignInOrLine from "./SignInOrLine";
-import Link from "next/link";
 
-export default function SignInForm() {
+export default function LoginForm() {
     return (
         <Card className="flex w-xs flex-col gap-9">
             <CardHeader>
-                <CardTitle className="text-center text-3xl">Sign in</CardTitle>
+                <CardTitle className="text-center text-3xl">Login</CardTitle>
             </CardHeader>
             <CardContent>
                 <form className="flex flex-col gap-6">
@@ -40,7 +40,7 @@ export default function SignInForm() {
                         />
                     </div>
                     <div className="grid gap-3">
-                        <FormButton name="Sign in" />
+                        <FormButton name="Log in" />
                         <SignInOrLine />
                         <GithubButton />
                     </div>
@@ -48,7 +48,7 @@ export default function SignInForm() {
             </CardContent>
             <CardFooter className="flex justify-center gap-1 text-sm">
                 Don&apos;t have an account?
-                <Link href="#" className="underline underline-offset-4">
+                <Link href="/signup" className="underline underline-offset-4">
                     Sign up
                 </Link>
             </CardFooter>
