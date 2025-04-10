@@ -1,10 +1,4 @@
-import {
-    Card,
-    CardContent,
-    CardFooter,
-    CardHeader,
-    CardTitle,
-} from "@/components/ui/card";
+import {Card, CardContent, CardFooter, CardHeader, CardTitle} from "@/components/ui/card";
 import {Input} from "@/components/ui/input";
 import {Label} from "@/components/ui/label";
 import FormButton from "./FormButton";
@@ -20,31 +14,15 @@ export default function SignUpForm() {
                 <form className="flex flex-col gap-6">
                     <div className="grid gap-3">
                         <Label htmlFor="email">Email</Label>
-                        <Input
-                            id="email"
-                            type="email"
-                            placeholder="Enter your email"
-                            required
-                            autoFocus
-                        />
+                        <Input id="email" type="email" placeholder="Enter your email" required autoFocus />
                     </div>
                     <div className="grid gap-3">
                         <Label htmlFor="password">Password</Label>
-                        <Input
-                            id="password"
-                            type="password"
-                            placeholder="Enter your password"
-                            required
-                        />
+                        <Input id="password" type="password" placeholder="Enter your password" required />
                     </div>
                     <div className="grid gap-3">
                         <Label htmlFor="password">Confirm password</Label>
-                        <Input
-                            id="password"
-                            type="password"
-                            placeholder="Repeat your password"
-                            required
-                        />
+                        <Input id="password" type="password" placeholder="Repeat your password" required />
                     </div>
                     <FormButton name="Sign up" />
                 </form>
