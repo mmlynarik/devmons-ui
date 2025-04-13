@@ -1,13 +1,13 @@
 "use server";
 
-import { redirect } from "next/navigation";
+import {redirect} from "next/navigation";
 import {signUpSchema} from "./schema";
 
 type FormState = {
     success: boolean;
     fields?: Record<string, string>;
     errors?: Record<string, string[]>;
-    message?: string
+    message?: string;
 };
 
 export async function signUpAction(
@@ -45,12 +45,12 @@ export async function signUpAction(
     }
 
     if (parsedFormData.data.email === "miroslav.mlynarik@gmail.com") {
-        console.log("Error email!")
+        console.log("Error email!");
         return {
             success: false,
             errors: {email: ["email already taken"]},
             fields: parsedFormData.data,
-            message: "Email already taken"
+            message: "Email already taken",
         };
     }
     console.log("parsed data", parsedFormData.data);
