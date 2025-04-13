@@ -36,10 +36,13 @@ export default function SignUpForm() {
     });
 
     useEffect(() => {
+        if (formState.errors?.email) {
+            form.setError("email", {type: "server", message: formState.errors.email[0]});
+        }
         if (formState.success) {
             form.reset();
         }
-    }, [form, formState.success]);
+    }, [form, formState]);
 
     console.log(formState);
     return (

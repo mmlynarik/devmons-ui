@@ -14,15 +14,6 @@ export async function signUpAction(
     prevState: FormState,
     formData: FormData
 ): Promise<FormState> {
-    console.log("payload received", formData);
-
-    if (!(formData instanceof FormData)) {
-        return {
-            success: false,
-            errors: {error: ["Invalid Form Data"]},
-        };
-    }
-
     const formDataAsObject = Object.fromEntries(formData);
     console.log("form data", formData);
 
@@ -48,9 +39,8 @@ export async function signUpAction(
         console.log("Error email!");
         return {
             success: false,
-            errors: {email: ["email already taken"]},
+            errors: {email: ["Email already taken"]},
             fields: parsedFormData.data,
-            message: "Email already taken",
         };
     }
     console.log("parsed data", parsedFormData.data);
