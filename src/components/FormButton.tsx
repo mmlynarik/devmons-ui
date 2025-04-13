@@ -1,17 +1,20 @@
-import {Button} from "@/components/ui/button";
-import React from "react";
+import { Button } from "@/components/ui/button";
+import LoadingButtonLabel from "./LoadingButtonLabel";
 
 type FormButterProps = {
-    name: string;
+    label: string;
+    labelPending: string
+    isPending: boolean
 };
 
-export default function FormButton(props: FormButterProps) {
+export default function FormButton({label, labelPending, isPending}: FormButterProps) {
     return (
         <Button
             type="submit"
-            className="bg-sky-600 hover:bg-sky-700 active:bg-sky-800"
+            disabled={isPending}
+            className="bg-sky-600 hover:bg-sky-700"
         >
-            {props.name}
+            {isPending ? <LoadingButtonLabel label={labelPending}/> : label}
         </Button>
     );
 }

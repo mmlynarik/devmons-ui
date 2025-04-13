@@ -16,7 +16,7 @@ export default function LoginForm() {
                 <form className="flex flex-col gap-6">
                     <div className="grid gap-3">
                         <Label htmlFor="email">Email</Label>
-                        <Input id="email" type="email" placeholder="Enter your email" />
+                        <Input id="email" type="email" placeholder="Enter your email" autoFocus />
                     </div>
                     <div className="grid gap-3">
                         <Label htmlFor="password">Password</Label>
@@ -28,7 +28,7 @@ export default function LoginForm() {
                         />
                     </div>
                     <div className="grid gap-3">
-                        <FormButton name="Log in" />
+                        <FormButton label="Log in" isPending={false} labelPending="Loggin in" />
                         <SignInOrLine />
                         <GithubButton />
                     </div>
