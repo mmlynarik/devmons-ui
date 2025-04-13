@@ -36,8 +36,14 @@ export default function SignUpForm() {
     });
 
     useEffect(() => {
-        if (formState.errors?.email) {
+        if (formState?.errors?.email) {
             form.setError("email", {type: "server", message: formState.errors.email[0]});
+        }
+        if (formState?.errors?.password) {
+            form.setError("password", {type: "server", message: formState.errors.password[0]});
+        }
+        if (formState?.errors?.confirmPassword) {
+            form.setError("confirmPassword", {type: "server", message: formState.errors.confirmPassword[0]});
         }
         if (formState.success) {
             form.reset();

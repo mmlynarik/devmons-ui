@@ -2,31 +2,21 @@
 
 import {redirect} from "next/navigation";
 import {signUpSchema} from "./schema";
+import {getFieldsFromFormData} from "./utils";
 
 type FormState = {
     success: boolean;
     fields?: Record<string, string>;
     errors?: Record<string, string[]>;
-    message?: string;
 };
 
-export async function signUpAction(
-    prevState: FormState,
-    formData: FormData
-): Promise<FormState> {
-    const formDataAsObject = Object.fromEntries(formData);
-    console.log("form data", formData);
-
-    const parsedFormData = signUpSchema.safeParse(formDataAsObject);
+export async function signUpAction(_: FormState, formData: FormData): Promise<FormState> {
+    const formDataObject = Object.fromEntries(formData);
+    const parsedFormData = signUpSchema.safeParse(formDataObject);
 
     if (!parsedFormData.success) {
         const errors = parsedFormData.error.flatten().fieldErrors;
-        const fields: Record<string, string> = {};
-
-        for (const key of Object.keys(formData)) {
-            fields[key] = formDataAsObject[key].toString();
-        }
-        console.log("error returned data", formData);
+        const fields = getFieldsFromFormData(formData);
         console.log("error returned error", errors);
         return {
             success: false,
@@ -44,5 +34,5 @@ export async function signUpAction(
         };
     }
     console.log("parsed data", parsedFormData.data);
-    redirect("/")
+    redirect("/");
 }
