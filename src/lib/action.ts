@@ -30,7 +30,7 @@ export async function signUpAction(_: FormState, formData: FormData): Promise<Fo
         console.log("Error email!");
         return {
             success: false,
-            errors: {email: ["Email already taken"]},
+            errors: {email: ["Email already taken", "AAAAAA"]},
             fields: parsedFormData.data,
         };
     }

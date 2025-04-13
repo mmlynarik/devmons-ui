@@ -36,15 +36,6 @@ export default function SignUpForm() {
     });
 
     useEffect(() => {
-        if (formState?.errors?.email) {
-            form.setError("email", {type: "server", message: formState.errors.email[0]});
-        }
-        if (formState?.errors?.password) {
-            form.setError("password", {type: "server", message: formState.errors.password[0]});
-        }
-        if (formState?.errors?.confirmPassword) {
-            form.setError("confirmPassword", {type: "server", message: formState.errors.confirmPassword[0]});
-        }
         if (formState.success) {
             form.reset();
         }
@@ -81,7 +72,10 @@ export default function SignUpForm() {
                                             {...field}
                                         />
                                     </FormControl>
-                                    <FormMessage />
+                                    <FormMessage>
+                                        {formState?.errors?.email &&
+                                            formState.errors.email[0]}
+                                    </FormMessage>
                                 </FormItem>
                             )}
                         />
@@ -98,11 +92,14 @@ export default function SignUpForm() {
                                             {...field}
                                         />
                                     </FormControl>
-                                    <FormMessage />
+                                    <FormMessage>
+                                        {formState?.errors?.password &&
+                                            formState.errors.password[0]}
+                                    </FormMessage>
                                 </FormItem>
                             )}
                         />
-                        
+
                         <FormField
                             control={form.control}
                             name="confirmPassword"
@@ -116,7 +113,10 @@ export default function SignUpForm() {
                                             {...field}
                                         />
                                     </FormControl>
-                                    <FormMessage />
+                                    <FormMessage>
+                                        {formState?.errors?.confirmPassword &&
+                                            formState.errors.confirmPassword[0]}
+                                    </FormMessage>
                                 </FormItem>
                             )}
                         />
