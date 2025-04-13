@@ -17,12 +17,13 @@ export async function signUpAction(_: FormState, formData: FormData): Promise<Fo
     if (!parsedFormData.success) {
         const errors = parsedFormData.error.flatten().fieldErrors;
         const fields = getFieldsFromFormData(formData);
-        console.log("error returned error", errors);
-        return {
+        const formState = {
             success: false,
             fields,
             errors,
         };
+        console.log("Parsing errors occured. Check formState:", formState);
+        return formState;
     }
 
     if (parsedFormData.data.email === "miroslav.mlynarik@gmail.com") {
@@ -33,6 +34,6 @@ export async function signUpAction(_: FormState, formData: FormData): Promise<Fo
             fields: parsedFormData.data,
         };
     }
-    console.log("parsed data", parsedFormData.data);
+
     redirect("/");
 }

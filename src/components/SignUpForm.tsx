@@ -50,7 +50,6 @@ export default function SignUpForm() {
         }
     }, [form, formState]);
 
-    console.log(formState);
     return (
         <Card className="flex w-xs flex-col gap-9">
             <CardHeader>
@@ -103,6 +102,7 @@ export default function SignUpForm() {
                                 </FormItem>
                             )}
                         />
+                        
                         <FormField
                             control={form.control}
                             name="confirmPassword"
