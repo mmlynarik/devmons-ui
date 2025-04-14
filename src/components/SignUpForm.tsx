@@ -10,7 +10,7 @@ import {
     FormMessage,
 } from "@/components/ui/form";
 import {Input} from "@/components/ui/input";
-import {signUpAction} from "@/lib/action";
+import {signUpAction} from "@/lib/actions/signup";
 import {signUpSchema, SignUpSchema} from "@/lib/schema";
 import {zodResolver} from "@hookform/resolvers/zod";
 import Link from "next/link";
@@ -69,6 +69,7 @@ export default function SignUpForm() {
                                     <FormControl>
                                         <Input
                                             placeholder="Enter your email"
+                                            autoFocus
                                             {...field}
                                         />
                                     </FormControl>

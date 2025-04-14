@@ -1,8 +1,8 @@
 "use server";
 
 import {redirect} from "next/navigation";
-import {signUpSchema} from "./schema";
-import {getFieldsFromFormData} from "./utils";
+import {signUpSchema} from "../schema";
+import {getFieldsFromFormData} from "../utils";
 
 type FormState = {
     success: boolean;
