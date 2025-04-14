@@ -12,7 +12,7 @@ type FormState = {
 
 export async function signUpAction(_: FormState, formData: FormData): Promise<FormState> {
     const formDataObject = Object.fromEntries(formData);
-    const parsedFormData = signUpSchema.safeParse(formDataObject);
+    const parsedFormData = await signUpSchema.safeParseAsync(formDataObject);
 
     if (!parsedFormData.success) {
         const errors = parsedFormData.error.flatten().fieldErrors;
