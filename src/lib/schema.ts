@@ -1,12 +1,26 @@
 import {z} from "zod";
 
-export async function isMailRegistered(mail: string) {
-    const res = await fetch("https://api.coingecko.com/api/v3/coins/list", {});
-    const data = await res.json();
-    if (data) {
+let lastValue: string | null = null;
+let lastResult: boolean | null = null;
+
+export async function checkEmailAvailable(email: string) {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_API_URI}/check/${email}`);
+    if (res.ok) {
+        console.log("Mail already exists, try again");
         return false;
     }
+    console.log("Mail OK");
     return true;
+}
+
+export async function checkEmailAvailableOnActive(value: string) {
+    if (value === lastValue && lastResult !== null) {
+        return lastResult;
+    }
+    const result = await checkEmailAvailable(value);
+    lastValue = value;
+    lastResult = result;
+    return result;
 }
 
 export const signUpSchema = z
@@ -15,7 +29,7 @@ export const signUpSchema = z
             .string()
             .trim()
             .email("Invalid email format")
-            .refine(isMailRegistered, "Email is already in use"),
+            .refine(checkEmailAvailableOnActive, "Email is already in use"),
         password: z.string().trim().min(8, "Password must have at least 8 characters"),
         confirmPassword: z.string().trim(),
     })
