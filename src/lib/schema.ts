@@ -4,13 +4,14 @@ let lastValue: string | null = null;
 let lastResult: boolean | null = null;
 
 export async function checkEmailAvailable(email: string) {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_API_URI}/check/${email}`);
-    if (res.ok) {
-        console.log("Mail already exists, try again");
-        return false;
+    const BASE_URL = `${process.env.NEXT_PUBLIC_BACKEND_API_URI}`
+    const res = await fetch(`${BASE_URL}/email/${email}`);
+    const data = await res.json()
+    if (data.available) {
+        return true;
     }
-    console.log("Mail OK");
-    return true;
+    console.log("Mail already exists, try again");
+    return false;
 }
 
 export async function checkEmailAvailableOnActive(value: string) {

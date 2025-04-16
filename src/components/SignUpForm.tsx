@@ -32,7 +32,7 @@ export default function SignUpForm() {
             confirmPassword: "",
             ...lastSubmittedValues,
         },
-        mode: "onTouched",
+        mode: "onBlur",
     });
 
     useEffect(() => {
