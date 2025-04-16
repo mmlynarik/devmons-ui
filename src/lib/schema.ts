@@ -10,7 +10,6 @@ export async function checkEmailAvailable(email: string) {
     if (data.available) {
         return true;
     }
-    console.log("Mail already exists, try again");
     return false;
 }
 
