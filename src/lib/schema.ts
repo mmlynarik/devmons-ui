@@ -1,17 +1,8 @@
 import {z} from "zod";
+import {checkEmailAvailable} from "@/lib/actions/signup";
 
 let lastValue: string | null = null;
 let lastResult: boolean | null = null;
-
-export async function checkEmailAvailable(email: string) {
-    const BASE_URL = `${process.env.NEXT_PUBLIC_BACKEND_API_URI}`
-    const res = await fetch(`${BASE_URL}/email/${email}`);
-    const data = await res.json()
-    if (data.available) {
-        return true;
-    }
-    return false;
-}
 
 export async function checkEmailAvailableOnActive(value: string) {
     if (value === lastValue && lastResult !== null) {

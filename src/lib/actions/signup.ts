@@ -37,3 +37,14 @@ export async function signUpAction(_: FormState, formData: FormData): Promise<Fo
 
     redirect("/");
 }
+
+
+export async function checkEmailAvailable(email: string) {
+    const BASE_URL = `${process.env.BACKEND_API_URI}`
+    const res = await fetch(`${BASE_URL}/email/${email}`);
+    const data = await res.json()
+    if (data.available) {
+        return true;
+    }
+    return false;
+}
