@@ -1,17 +1,10 @@
 "use client";
 
 import {Card, CardContent, CardFooter, CardHeader, CardTitle} from "@/components/ui/card";
-import {
-    Form,
-    FormControl,
-    FormField,
-    FormItem,
-    FormLabel,
-    FormMessage,
-} from "@/components/ui/form";
+import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage} from "@/components/ui/form";
 import {Input} from "@/components/ui/input";
 import {signUpAction} from "@/lib/actions/signup";
-import {signUpSchema, SignUpSchema} from "@/lib/schema";
+import {signUpSchema, SignUpSchema} from "@/lib/schemas/signup";
 import {zodResolver} from "@hookform/resolvers/zod";
 import Link from "next/link";
 import {startTransition, useActionState, useEffect, useRef} from "react";
@@ -53,9 +46,7 @@ export default function SignUpForm() {
                         className="flex flex-col gap-6"
                         onSubmit={(e) => {
                             form.handleSubmit(() => {
-                                startTransition(() =>
-                                    formAction(new FormData(formRef.current!))
-                                );
+                                startTransition(() => formAction(new FormData(formRef.current!)));
                             })(e);
                         }}
                         action={formAction}
@@ -67,15 +58,10 @@ export default function SignUpForm() {
                                 <FormItem className="grid gap-3">
                                     <FormLabel>Email</FormLabel>
                                     <FormControl>
-                                        <Input
-                                            placeholder="Enter your email"
-                                            autoFocus
-                                            {...field}
-                                        />
+                                        <Input placeholder="Enter your email" autoFocus {...field} />
                                     </FormControl>
                                     <FormMessage>
-                                        {formState?.errors?.email &&
-                                            formState.errors.email[0]}
+                                        {formState?.errors?.email && formState.errors.email[0]}
                                     </FormMessage>
                                 </FormItem>
                             )}
@@ -87,15 +73,10 @@ export default function SignUpForm() {
                                 <FormItem className="grid gap-3">
                                     <FormLabel>Password</FormLabel>
                                     <FormControl>
-                                        <Input
-                                            placeholder="Enter your password"
-                                            type="password"
-                                            {...field}
-                                        />
+                                        <Input placeholder="Enter your password" type="password" {...field} />
                                     </FormControl>
                                     <FormMessage>
-                                        {formState?.errors?.password &&
-                                            formState.errors.password[0]}
+                                        {formState?.errors?.password && formState.errors.password[0]}
                                     </FormMessage>
                                 </FormItem>
                             )}
@@ -121,11 +102,7 @@ export default function SignUpForm() {
                                 </FormItem>
                             )}
                         />
-                        <FormButton
-                            label="Sign up"
-                            labelPending="Signing up"
-                            isPending={isPending}
-                        />
+                        <FormButton label="Sign up" labelPending="Signing up" isPending={isPending} />
                     </form>
                 </Form>
             </CardContent>
