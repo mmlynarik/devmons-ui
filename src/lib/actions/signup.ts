@@ -1,8 +1,11 @@
 "use server";
 
-import { redirect } from "next/navigation";
-import { signUpSchema } from "../schemas/signup";
-import { getFieldsFromFormData } from "../utils";
+import {SESSION_EXP_SECONDS, SIGNUP_URL} from "@/config";
+import {redirect} from "next/navigation";
+import {generateSalt, hashPassword} from "../auth/passwordHasher";
+import {createSession} from "../auth/session";
+import {signUpSchema} from "../schemas/signup";
+import {getFieldsFromFormData} from "../utils";
 
 type FormState = {
     success: boolean;
@@ -10,31 +13,29 @@ type FormState = {
     errors?: Record<string, string[]>;
 };
 
-export async function signUpAction(_: FormState, formData: FormData): Promise<FormState> {
-    const formDataObject = Object.fromEntries(formData);
-    const parsed = await signUpSchema.safeParseAsync(formDataObject);
+export async function signUpAction(formState: FormState, formData: FormData): Promise<FormState> {
+    const formDataAsObject = Object.fromEntries(formData);
+    const parsed = await signUpSchema.safeParseAsync(formDataAsObject);
 
     if (!parsed.success) {
         const errors = parsed.error.flatten().fieldErrors;
         const fields = getFieldsFromFormData(formData);
-        const formState = {
-            success: false,
-            fields,
-            errors,
-        };
-        console.log("Parsing errors occured. Check formState:", formState);
-        return formState;
+        return {success: false, fields, errors};
     }
 
-    const payload = JSON.stringify({email: parsed.data.email, password: parsed.data.email});
-    const res = await fetch(`${process.env.BACKEND_API_URI}/signup`, {
+    const salt = generateSalt();
+    const hashedPassword = await hashPassword(parsed.data.password, salt);
+
+    const payload = JSON.stringify({email: parsed.data.email, password: hashedPassword, salt: salt});
+    const res = await fetch(SIGNUP_URL, {
         method: "POST",
         body: payload,
         headers: {"Content-Type": "application/json"},
     });
     const data = await res.json();
-    console.log(data);
-    redirect("/login");
+    await createSession(data.id, "vce", SESSION_EXP_SECONDS);
+
+    redirect("/dashboard");
 }
 
 export async function checkEmailAvailable(email: string) {

@@ -7,16 +7,14 @@ import {signUpAction} from "@/lib/actions/signup";
 import {signUpSchema, SignUpSchema} from "@/lib/schemas/signup";
 import {zodResolver} from "@hookform/resolvers/zod";
 import Link from "next/link";
-import {startTransition, useActionState, useEffect, useRef} from "react";
+import {startTransition, useActionState, useRef} from "react";
 import {useForm} from "react-hook-form";
 import FormButton from "./FormButton";
 
 export default function SignUpForm() {
-    const [formState, formAction, isPending] = useActionState(signUpAction, {
-        success: false,
-    });
-    const lastSubmittedValues = formState?.fields ?? {};
+    const [formState, formAction, isPending] = useActionState(signUpAction, {success: false});
     const formRef = useRef<HTMLFormElement>(null);
+    const lastSubmittedValues = formState?.fields ?? {};
     const form = useForm<SignUpSchema>({
         resolver: zodResolver(signUpSchema),
         defaultValues: {
@@ -27,12 +25,6 @@ export default function SignUpForm() {
         },
         mode: "onBlur",
     });
-
-    useEffect(() => {
-        if (formState.success) {
-            form.reset();
-        }
-    }, [form, formState]);
 
     return (
         <Card className="flex w-xs flex-col gap-9">

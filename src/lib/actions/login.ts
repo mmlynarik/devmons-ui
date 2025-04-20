@@ -1,8 +1,8 @@
 "use server";
 
 import {redirect} from "next/navigation";
-import {signUpSchema} from "../schemas/signup";
 import {getFieldsFromFormData} from "../utils";
+import {loginSchema} from "../schemas/login";
 
 type FormState = {
     success: boolean;
@@ -12,10 +12,10 @@ type FormState = {
 
 export async function loginAction(_: FormState, formData: FormData): Promise<FormState> {
     const formDataObject = Object.fromEntries(formData);
-    const parsedFormData = signUpSchema.safeParse(formDataObject);
+    const parsed = loginSchema.safeParse(formDataObject);
 
-    if (!parsedFormData.success) {
-        const errors = parsedFormData.error.flatten().fieldErrors;
+    if (!parsed.success) {
+        const errors = parsed.error.flatten().fieldErrors;
         const fields = getFieldsFromFormData(formData);
         const formState = {
             success: false,
@@ -26,12 +26,12 @@ export async function loginAction(_: FormState, formData: FormData): Promise<For
         return formState;
     }
 
-    if (parsedFormData.data.email === "miroslav.mlynarik@gmail.com") {
+    if (parsed.data.email === "miroslav.mlynarik@gmail.com") {
         console.log("Error email!");
         return {
             success: false,
             errors: {email: ["Email already taken", "AAAAAA"]},
-            fields: parsedFormData.data,
+            fields: parsed.data,
         };
     }
 
