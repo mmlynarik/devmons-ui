@@ -1,8 +1,7 @@
-import {NextRequest, NextResponse} from "next/server";
-import {decrypt} from "@/lib/auth/session";
-import {cookies} from "next/headers";
+import { verifyJWT } from "@/lib/auth/jwtSession";
+import { cookies } from "next/headers";
+import { NextRequest, NextResponse } from "next/server";
 
-// 1. Specify protected and public routes
 const protectedRoutes = ["/dashboard"];
 const publicRoutes = ["/login", "/signup", "/"];
 
@@ -13,14 +12,13 @@ export default async function middleware(req: NextRequest) {
 
     const access_token = (await cookies()).get("access_token")?.value;
 
-    if (!access_token) {
+    if (!access_token || !(await verifyJWT(access_token))) {
         if (isProtectedRoute) {
             return NextResponse.redirect(new URL("/login", req.nextUrl));
         }
     }
-    if (access_token) {
-        const payload = await decrypt(access_token)
-        if (isPublicRoute && payload.aud === "vce") {
+    if (access_token && (await verifyJWT(access_token))) {
+        if (isPublicRoute) {
             return NextResponse.redirect(new URL("/dashboard", req.nextUrl));
         }
     }

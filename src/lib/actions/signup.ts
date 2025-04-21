@@ -2,8 +2,8 @@
 
 import {SESSION_EXP_SECONDS, SIGNUP_URL} from "@/config";
 import {redirect} from "next/navigation";
+import {createAndStoreJWTSession} from "../auth/jwtSession";
 import {generateSalt, hashPassword} from "../auth/passwordHasher";
-import {createSession} from "../auth/session";
 import {signUpSchema} from "../schemas/signup";
 import {getFieldsFromFormData} from "../utils";
 
@@ -33,7 +33,7 @@ export async function signUpAction(formState: FormState, formData: FormData): Pr
         headers: {"Content-Type": "application/json"},
     });
     const data = await res.json();
-    await createSession(data.id, "vce", SESSION_EXP_SECONDS);
+    await createAndStoreJWTSession(data.id, "vce", SESSION_EXP_SECONDS);
 
     redirect("/dashboard");
 }
