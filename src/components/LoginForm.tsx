@@ -2,6 +2,7 @@
 
 import {Card, CardContent, CardFooter, CardHeader, CardTitle} from "@/components/ui/card";
 import {Input} from "@/components/ui/input";
+import {X} from "lucide-react";
 import {loginAction} from "@/lib/actions/login";
 import {LoginSchema, loginSchema} from "@/lib/schemas/login";
 import {zodResolver} from "@hookform/resolvers/zod";
@@ -12,6 +13,15 @@ import FormButton from "./FormButton";
 import GithubButton from "./GithubButton";
 import SignInOrLine from "./SignInOrLine";
 import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage} from "./ui/form";
+
+function RootErrorField() {
+    return (
+        <div className="flex items-center justify-center gap-4 rounded-xs bg-red-100 py-2 text-center text-sm outline-1 outline-red-200">
+            <span>Incorrect username or password.</span>
+            <X className="size-[16px] cursor-pointer bg-red-100 p-0 text-red-500" />
+        </div>
+    );
+}
 
 export default function LoginForm() {
     const [formState, formAction, isPending] = useActionState(loginAction, {success: false});
@@ -33,11 +43,7 @@ export default function LoginForm() {
             <CardContent>
                 <Form {...form}>
                     <form className="flex flex-col gap-6" action={formAction}>
-                        {formState?.errors?.root && (
-                            <div className="rounded-xs bg-red-100 py-2 text-center text-sm outline-1 outline-red-200">
-                                Incorrect username or password.
-                            </div>
-                        )}
+                        {formState?.errors?.root && <RootErrorField />}
                         <FormField
                             control={form.control}
                             name="email"
