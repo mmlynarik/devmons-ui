@@ -33,6 +33,11 @@ export default function LoginForm() {
             <CardContent>
                 <Form {...form}>
                     <form className="flex flex-col gap-6" action={formAction}>
+                        {formState?.errors?.root && (
+                            <div className="rounded-xs bg-red-100 py-2 text-center text-sm outline-1 outline-red-200">
+                                Incorrect username or password.
+                            </div>
+                        )}
                         <FormField
                             control={form.control}
                             name="email"

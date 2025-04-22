@@ -26,14 +26,12 @@ export async function loginAction(_: FormState, formData: FormData): Promise<For
 
     const user = await getUser(parsed.data.email);
     if (!user) {
-        console.log("Email is not correct. Try again");
-        return {success: false};
+        return {success: false, errors: {root: ["Incorrect email or password"]}};
     }
 
     const isVerifiedPassword = await verifyPassword(parsed.data.password, user.password, user.salt);
     if (!isVerifiedPassword) {
-        console.log("Password is not correct. Try again");
-        return {success: false};
+        return {success: false, errors: {root: ["Incorrect email or password"]}};
     }
 
     await createJWTSession(user.id, "vce", SESSION_EXP_SECONDS);
