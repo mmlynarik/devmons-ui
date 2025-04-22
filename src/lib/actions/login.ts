@@ -6,7 +6,7 @@ import {loginSchema} from "../schemas/login";
 import {getUser} from "../auth/user";
 import {verifyPassword} from "../auth/passwordHasher";
 import {SESSION_EXP_SECONDS} from "@/config";
-import { createAndStoreJWTSession } from "../auth/jwtSession";
+import {createAndStoreJWTSession as createJWTSession} from "../auth/jwtSession";
 
 type FormState = {
     success: boolean;
@@ -26,15 +26,17 @@ export async function loginAction(_: FormState, formData: FormData): Promise<For
 
     const user = await getUser(parsed.data.email);
     if (!user) {
+        console.log("Email is not correct. Try again");
         return {success: false};
     }
 
-    const isVerifiedPassword = verifyPassword(parsed.data.password, user.password, user.salt);
+    const isVerifiedPassword = await verifyPassword(parsed.data.password, user.password, user.salt);
     if (!isVerifiedPassword) {
-        return {success: false}
+        console.log("Password is not correct. Try again");
+        return {success: false};
     }
 
-    await createAndStoreJWTSession(user.id, "vce", SESSION_EXP_SECONDS);
+    await createJWTSession(user.id, "vce", SESSION_EXP_SECONDS);
     console.log(`User ${user.email} logged in`);
 
     redirect("/dashboard");
