@@ -50,7 +50,7 @@ export default function SignUpForm() {
                                 <FormItem className="grid gap-3">
                                     <FormLabel>Email</FormLabel>
                                     <FormControl>
-                                        <Input placeholder="Enter your email" autoFocus {...field} />
+                                        <Input placeholder="Enter your email" {...field} />
                                     </FormControl>
                                     <FormMessage>
                                         {formState?.errors?.email && formState.errors.email[0]}

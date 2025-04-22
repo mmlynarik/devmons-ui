@@ -1,11 +1,11 @@
 "use server";
 
-import {SESSION_EXP_SECONDS, SIGNUP_URL} from "@/config";
+import {SESSION_EXP_SECONDS} from "@/config";
 import {redirect} from "next/navigation";
-import {createAndStoreJWTSession} from "../auth/jwtSession";
-import {generateSalt, hashPassword} from "../auth/passwordHasher";
-import {signUpSchema} from "../schemas/signup";
-import {getFieldsFromFormData} from "../utils";
+import {createAndStoreJWTSession} from "@/lib/auth/jwtSession";
+import {signUpSchema} from "@/lib/schemas/signup";
+import {getFieldsFromFormData} from "@/lib/utils";
+import {createUser} from "@/lib/auth/user";
 
 type FormState = {
     success: boolean;
@@ -23,27 +23,18 @@ export async function signUpAction(formState: FormState, formData: FormData): Pr
         return {success: false, fields, errors};
     }
 
-    const salt = generateSalt();
-    const hashedPassword = await hashPassword(parsed.data.password, salt);
-
-    const payload = JSON.stringify({email: parsed.data.email, password: hashedPassword, salt: salt});
-    const res = await fetch(SIGNUP_URL, {
-        method: "POST",
-        body: payload,
-        headers: {"Content-Type": "application/json"},
-    });
-    const data = await res.json();
-    await createAndStoreJWTSession(data.id, "vce", SESSION_EXP_SECONDS);
+    const user = await createUser(parsed.data);
+    await createAndStoreJWTSession(user.id, "vce", SESSION_EXP_SECONDS);
 
     redirect("/dashboard");
 }
 
 export async function checkEmailAvailable(email: string) {
     const BASE_URL = `${process.env.BACKEND_API_URI}`;
-    const res = await fetch(`${BASE_URL}/email/${email}`);
-    const data = await res.json();
-    if (data.available) {
-        return true;
+    const res = await fetch(`${BASE_URL}/users/${email}`);
+    if (res.ok) {
+        console.log(`User with email ${email} already exists`);
+        return false;
     }
-    return false;
+    return true;
 }

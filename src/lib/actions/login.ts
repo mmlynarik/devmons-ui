@@ -3,6 +3,10 @@
 import {redirect} from "next/navigation";
 import {getFieldsFromFormData} from "../utils";
 import {loginSchema} from "../schemas/login";
+import {getUser} from "../auth/user";
+import {verifyPassword} from "../auth/passwordHasher";
+import {SESSION_EXP_SECONDS} from "@/config";
+import { createAndStoreJWTSession } from "../auth/jwtSession";
 
 type FormState = {
     success: boolean;
@@ -17,23 +21,21 @@ export async function loginAction(_: FormState, formData: FormData): Promise<For
     if (!parsed.success) {
         const errors = parsed.error.flatten().fieldErrors;
         const fields = getFieldsFromFormData(formData);
-        const formState = {
-            success: false,
-            fields,
-            errors,
-        };
-        console.log("Parsing errors occured. Check formState:", formState);
-        return formState;
+        return {success: false, fields, errors};
     }
 
-    if (parsed.data.email === "miroslav.mlynarik@gmail.com") {
-        console.log("Error email!");
-        return {
-            success: false,
-            errors: {email: ["Email already taken", "AAAAAA"]},
-            fields: parsed.data,
-        };
+    const user = await getUser(parsed.data.email);
+    if (!user) {
+        return {success: false};
     }
 
-    redirect("/");
+    const isVerifiedPassword = verifyPassword(parsed.data.password, user.password, user.salt);
+    if (!isVerifiedPassword) {
+        return {success: false}
+    }
+
+    await createAndStoreJWTSession(user.id, "vce", SESSION_EXP_SECONDS);
+    console.log(`User ${user.email} logged in`);
+
+    redirect("/dashboard");
 }

@@ -1,5 +1,5 @@
-import {z} from "zod";
 import {checkEmailAvailable} from "@/lib/actions/signup";
+import {z} from "zod";
 
 let lastValue: string | null = null;
 let lastResult: boolean | null = null;
