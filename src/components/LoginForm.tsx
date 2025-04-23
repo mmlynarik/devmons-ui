@@ -7,7 +7,7 @@ import {loginAction} from "@/lib/actions/login";
 import {LoginSchema, loginSchema} from "@/lib/schemas/login";
 import {zodResolver} from "@hookform/resolvers/zod";
 import Link from "next/link";
-import {Dispatch, SetStateAction, useActionState, useState} from "react";
+import {Dispatch, SetStateAction, useActionState, useEffect, useState} from "react";
 import {useForm} from "react-hook-form";
 import FormButton from "./FormButton";
 import GithubButton from "./GithubButton";
@@ -44,6 +44,10 @@ export default function LoginForm() {
             ...lastSubmittedValues,
         },
     });
+
+    useEffect(() => {
+        setIsCredentialsError(true);
+    }, [formState]);
 
     return (
         <Card className="flex w-xs flex-col gap-9">
