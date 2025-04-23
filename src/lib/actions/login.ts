@@ -1,12 +1,12 @@
 "use server";
 
-import {redirect} from "next/navigation";
-import {getFieldsFromFormData} from "../utils";
-import {loginSchema} from "../schemas/login";
-import {getUser} from "../auth/user";
-import {verifyPassword} from "../auth/passwordHasher";
 import {SESSION_EXP_SECONDS} from "@/config";
-import {createAndStoreJWTSession as createJWTSession} from "../auth/jwtSession";
+import {redirect} from "next/navigation";
+import {createJWTSession} from "../auth/jwtSession";
+import {verifyPassword} from "../auth/passwordHasher";
+import {getUserByEmail} from "../auth/user";
+import {loginSchema} from "../schemas/login";
+import {getFieldsFromFormData} from "../utils";
 
 type FormState = {
     success: boolean;
@@ -24,7 +24,7 @@ export async function loginAction(_: FormState, formData: FormData): Promise<For
         return {success: false, fields, errors};
     }
 
-    const user = await getUser(parsed.data.email);
+    const user = await getUserByEmail(parsed.data.email);
     if (!user) {
         return {success: false, errors: {root: ["Incorrect email or password"]}};
     }

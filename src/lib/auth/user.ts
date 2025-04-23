@@ -1,4 +1,4 @@
-import {SIGNUP_URL} from "@/config";
+import {BASE_API_URI} from "@/config";
 import {generateSalt, hashPassword} from "@/lib/auth/passwordHasher";
 import {SignUpSchema} from "@/lib/schemas/signup";
 
@@ -12,14 +12,14 @@ type User = {
     email: string;
     password: string;
     salt: string;
-}
+};
 
-export async function createUser(parsedForm: SignUpSchema): Promise<UserCreated> {
+export async function registerUser(parsedForm: SignUpSchema): Promise<UserCreated> {
     const salt = generateSalt();
     const hashedPassword = await hashPassword(parsedForm.password, salt);
 
     const payload = JSON.stringify({email: parsedForm.email, password: hashedPassword, salt: salt});
-    const res = await fetch(SIGNUP_URL, {
+    const res = await fetch(`${BASE_API_URI}/users`, {
         method: "POST",
         body: payload,
         headers: {"Content-Type": "application/json"},
@@ -27,11 +27,10 @@ export async function createUser(parsedForm: SignUpSchema): Promise<UserCreated>
     return await res.json();
 }
 
-export async function getUser(email: string): Promise<User | null> {
-    const BASE_URL = `${process.env.BACKEND_API_URI}`;
-    const res = await fetch(`${BASE_URL}/users/${email}`);
+export async function getUserByEmail(email: string): Promise<User | null> {
+    const res = await fetch(`${BASE_API_URI}/users/${email}`);
     if (!res.ok) {
-        return null
+        return null;
     }
-    return await res.json()
+    return await res.json();
 }

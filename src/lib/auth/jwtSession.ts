@@ -20,7 +20,7 @@ export async function verifyJWT(token: string): Promise<boolean> {
     return (await jwtSchema.safeParseAsync(payload)).success;
 }
 
-export async function createAndStoreJWTSession(userId: number, aud: string, expires_after_secs: number) {
+export async function createJWTSession(userId: number, aud: string, expires_after_secs: number) {
     const expiresAt = new Date(Date.now() + expires_after_secs * 1000);
     const access_token = await getSignedJWT({userId}, expiresAt, aud);
     const cookieStore = await cookies();
@@ -31,4 +31,9 @@ export async function createAndStoreJWTSession(userId: number, aud: string, expi
         sameSite: "lax",
         path: "/",
     });
+}
+
+export async function deleteJWTSession() {
+    const cookieStore = await cookies();
+    cookieStore.delete("access_token");
 }

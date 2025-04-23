@@ -2,10 +2,10 @@
 
 import {SESSION_EXP_SECONDS} from "@/config";
 import {redirect} from "next/navigation";
-import {createAndStoreJWTSession} from "@/lib/auth/jwtSession";
+import {createJWTSession} from "@/lib/auth/jwtSession";
 import {signUpSchema} from "@/lib/schemas/signup";
 import {getFieldsFromFormData} from "@/lib/utils";
-import {createUser} from "@/lib/auth/user";
+import {registerUser} from "@/lib/auth/user";
 
 type FormState = {
     success: boolean;
@@ -23,8 +23,8 @@ export async function signUpAction(formState: FormState, formData: FormData): Pr
         return {success: false, fields, errors};
     }
 
-    const user = await createUser(parsed.data);
-    await createAndStoreJWTSession(user.id, "vce", SESSION_EXP_SECONDS);
+    const user = await registerUser(parsed.data);
+    await createJWTSession(user.id, "vce", SESSION_EXP_SECONDS);
 
     redirect("/dashboard");
 }
