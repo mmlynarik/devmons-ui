@@ -7,25 +7,35 @@ import {loginAction} from "@/lib/actions/login";
 import {LoginSchema, loginSchema} from "@/lib/schemas/login";
 import {zodResolver} from "@hookform/resolvers/zod";
 import Link from "next/link";
-import {useActionState} from "react";
+import {Dispatch, SetStateAction, useActionState, useState} from "react";
 import {useForm} from "react-hook-form";
 import FormButton from "./FormButton";
 import GithubButton from "./GithubButton";
 import SignInOrLine from "./SignInOrLine";
-import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage} from "./ui/form";
+import {Form, FormControl, FormField, FormItem, FormLabel} from "./ui/form";
 
-function RootErrorField() {
+type CredentialsErrorFieldProps = {
+    setIsCredentialsError: Dispatch<SetStateAction<boolean>>;
+};
+
+function CredentialsErrorField(props: CredentialsErrorFieldProps) {
     return (
-        <div className="flex items-center justify-center gap-4 rounded-xs bg-red-100 py-2 text-center text-sm outline-1 outline-red-200">
-            <span>Incorrect username or password.</span>
-            <X className="size-[16px] cursor-pointer bg-red-100 p-0 text-red-500" />
-        </div>
+        <>
+            <div className="flex items-center justify-center gap-4 rounded-xs bg-red-100 py-2 text-center text-sm outline-1 outline-red-200">
+                <span>Incorrect username or password.</span>
+                <X
+                    onClick={() => props.setIsCredentialsError(false)}
+                    className="size-[16px] cursor-pointer bg-red-100 p-0 text-red-500"
+                />
+            </div>
+        </>
     );
 }
 
 export default function LoginForm() {
     const [formState, formAction, isPending] = useActionState(loginAction, {success: false});
     const lastSubmittedValues = formState?.fields ?? {};
+    const [isCredentialsError, setIsCredentialsError] = useState<boolean>(true);
     const form = useForm<LoginSchema>({
         resolver: zodResolver(loginSchema),
         defaultValues: {
@@ -43,7 +53,9 @@ export default function LoginForm() {
             <CardContent>
                 <Form {...form}>
                     <form className="flex flex-col gap-6" action={formAction}>
-                        {formState?.errors?.root && <RootErrorField />}
+                        {formState?.errors?.root && isCredentialsError && (
+                            <CredentialsErrorField setIsCredentialsError={setIsCredentialsError} />
+                        )}
                         <FormField
                             control={form.control}
                             name="email"
@@ -53,9 +65,6 @@ export default function LoginForm() {
                                     <FormControl>
                                         <Input placeholder="Enter your email" autoFocus {...field} />
                                     </FormControl>
-                                    <FormMessage>
-                                        {formState?.errors?.email && formState.errors.email[0]}
-                                    </FormMessage>
                                 </FormItem>
                             )}
                         />
@@ -68,9 +77,6 @@ export default function LoginForm() {
                                     <FormControl>
                                         <Input placeholder="Enter your password" type="password" {...field} />
                                     </FormControl>
-                                    <FormMessage>
-                                        {formState?.errors?.password && formState.errors.password[0]}
-                                    </FormMessage>
                                 </FormItem>
                             )}
                         />
