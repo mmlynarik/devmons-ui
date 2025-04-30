@@ -8,6 +8,8 @@ import {getUserByEmail} from "../auth/user";
 import {loginSchema} from "../schemas/login";
 import {getFieldsFromFormData} from "../utils";
 
+const GITHUB_AUTHORIZE_URL = `https://github.com/login/oauth/authorize/?client_id=${process.env.GITHUB_CLIENT_ID}&redirect_url=${process.env.GITHUB_REDIRECT_URI}?scope=user:email`;
+
 type FormState = {
     success: boolean;
     fields?: Record<string, string>;
@@ -38,4 +40,8 @@ export async function loginAction(_: FormState, formData: FormData): Promise<For
     console.log(`User ${user.email} logged in`);
 
     redirect("/dashboard");
+}
+
+export async function githubLogin() {
+    redirect(GITHUB_AUTHORIZE_URL)
 }
