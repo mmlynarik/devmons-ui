@@ -3,7 +3,7 @@ import {SignJWT, jwtVerify} from "jose";
 import {cookies} from "next/headers";
 import "server-only";
 
-const secretKey = process.env.SESSION_SECRET;
+const secretKey = process.env.JWT_SECRET_KEY;
 const encodedKey = new TextEncoder().encode(secretKey);
 
 export async function getSignedJWT(payload: JWTPrivateClaims, expiresAt: Date, aud: string) {
