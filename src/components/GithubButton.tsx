@@ -2,6 +2,10 @@ import { GitHubIcon } from "@/components/GithubIcon";
 import Link from "next/link";
 import { Button } from "./ui/button";
 
+
+const GITHUB_AUTHORIZE_URL = `https://github.com/login/oauth/authorize/?client_id=${process.env.GITHUB_CLIENT_ID}&redirect_url=${process.env.GITHUB_REDIRECT_URI}?scope=user:email`;
+
+
 export default function GithubButton() {
     return (
         <Button
@@ -9,7 +13,7 @@ export default function GithubButton() {
             asChild
         >
             <Link
-                href="https://www.github.com"
+                href={GITHUB_AUTHORIZE_URL}
                 className="flex items-center gap-3"
             >
                 <span className="fill-current">
