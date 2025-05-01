@@ -1,14 +1,12 @@
 "use server";
 
-import {SESSION_EXP_SECONDS} from "@/config";
-import {redirect} from "next/navigation";
-import {createJWTSession} from "../auth/jwtSession";
-import {verifyPassword} from "../auth/passwordHasher";
-import {getUserByEmail} from "../auth/user";
-import {loginSchema} from "../schemas/login";
-import {getFieldsFromFormData} from "../utils";
-
-const GITHUB_AUTHORIZE_URL = `https://github.com/login/oauth/authorize/?client_id=${process.env.GITHUB_CLIENT_ID}&redirect_url=${process.env.GITHUB_REDIRECT_URI}?scope=user:email`;
+import { GITHUB_AUTHORIZE_URL, JWT_SESSION_EXP_SECONDS } from "@/config";
+import { redirect } from "next/navigation";
+import { createJWTSession } from "../auth/jwtSession";
+import { verifyPassword } from "../auth/passwordHasher";
+import { getUserByEmail } from "../auth/user";
+import { loginSchema } from "../schemas/login";
+import { getFieldsFromFormData } from "../utils";
 
 type FormState = {
     success: boolean;
@@ -36,12 +34,12 @@ export async function loginAction(_: FormState, formData: FormData): Promise<For
         return {success: false, errors: {root: ["Incorrect email or password"]}};
     }
 
-    await createJWTSession(user.id, "vce", SESSION_EXP_SECONDS);
+    await createJWTSession(user.id, "vce", JWT_SESSION_EXP_SECONDS);
     console.log(`User ${user.email} logged in`);
 
     redirect("/dashboard");
 }
 
 export async function githubLogin() {
-    redirect(GITHUB_AUTHORIZE_URL)
+    redirect(GITHUB_AUTHORIZE_URL);
 }

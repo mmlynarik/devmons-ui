@@ -1,4 +1,5 @@
 import crypto from "crypto";
+import "server-only";
 
 export async function hashPassword(password: string, salt: string): Promise<string> {
     return new Promise((resolve, reject) => {

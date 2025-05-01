@@ -1,19 +1,24 @@
 import {GitHubIcon} from "@/components/GithubIcon";
 import {Button} from "./ui/button";
 import {githubLogin} from "@/lib/actions/login";
+import {useTransition} from "react";
+import {LoaderCircle} from "lucide-react";
 
 export default function GithubButton() {
+    const [isPending, startTransition] = useTransition();
     return (
         <Button
             type="button"
-            className="w-full bg-gray-600 text-white hover:bg-gray-700 hover:text-white active:bg-gray-800 active:text-white"
-            onClick={githubLogin}
+            disabled={isPending}
+            className="w-full bg-gray-600 hover:bg-gray-700"
+            onClick={() => startTransition(githubLogin)}
         >
             <div className="flex items-center gap-3">
+                {isPending && <LoaderCircle className="animate-spin" />}
                 <span className="fill-current">
                     <GitHubIcon />
                 </span>
-                <span>Sign in with Github</span>
+                <span>Log{isPending && "ging"} in with Github</span>
             </div>
         </Button>
     );

@@ -1,0 +1,23 @@
+import { JWT_SESSION_EXP_SECONDS } from "@/config";
+import {createJWTSession} from "@/lib/auth/jwtSession";
+import {getGithubUser, getUserbyGithubId, registerUserOnGithubLogin} from "@/lib/auth/user";
+import {redirect} from "next/navigation";
+import {type NextRequest} from "next/server";
+
+export async function GET(request: NextRequest) {
+    const queryParams = request.nextUrl.searchParams;
+    const code = queryParams.get("code");
+    if (!code) {
+        throw new Error("Github authentication failed");
+    }
+
+    const githubUser = await getGithubUser(code);
+    let user = await getUserbyGithubId(githubUser.id);
+    if (!user) {
+        user = await registerUserOnGithubLogin(githubUser);
+    }
+    await createJWTSession(user.id, "vce", JWT_SESSION_EXP_SECONDS);
+    console.log(`User ${user.email} logged in`);
+
+    redirect("/dashboard");
+}

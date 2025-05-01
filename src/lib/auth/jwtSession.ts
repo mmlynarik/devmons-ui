@@ -1,10 +1,10 @@
+import {JWT_SECRET_KEY} from "@/config";
 import {JWTPrivateClaims, jwtSchema} from "@/lib/schemas/jwt";
 import {SignJWT, jwtVerify} from "jose";
 import {cookies} from "next/headers";
 import "server-only";
 
-const secretKey = process.env.JWT_SECRET_KEY;
-const encodedKey = new TextEncoder().encode(secretKey);
+const encodedKey = new TextEncoder().encode(JWT_SECRET_KEY);
 
 export async function getSignedJWT(payload: JWTPrivateClaims, expiresAt: Date, aud: string) {
     return new SignJWT(payload)
