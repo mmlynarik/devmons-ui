@@ -17,7 +17,7 @@ export async function GET(request: NextRequest) {
         user = await registerUserOnGithubLogin(githubUser);
     }
     await createJWTSession(user.id, "vce", JWT_SESSION_EXP_SECONDS);
-    console.log(`User ${user.email} logged in`);
+    console.log(`User with id=${user.id} logged in`);
 
     redirect("/dashboard");
 }
