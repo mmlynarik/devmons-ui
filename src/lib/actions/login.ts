@@ -36,8 +36,7 @@ export async function loginAction(_: FormState, formData: FormData): Promise<For
 
     const {access_token, refresh_token} = await createJWTSession(user.id);
     await setJWTSessionHeader(access_token, refresh_token);
-    console.log(`User ${user.email} logged in`);
-
+    console.log(`User with id=${user.id} logged in`);
     redirect("/dashboard");
 }
 

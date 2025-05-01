@@ -5,8 +5,8 @@ import {
     GITHUB_TOKEN_URL,
     GITHUB_USER_URL,
 } from "@/config";
-import { generateSalt, hashPassword } from "@/lib/auth/passwordHasher";
-import { SignUpSchema } from "@/lib/schemas/signup";
+import {generateSalt, hashPassword} from "@/lib/auth/passwordHasher";
+import {SignUpSchema} from "@/lib/schemas/signup";
 import "server-only";
 
 type UserCreated = {
@@ -25,7 +25,7 @@ type User = {
 type GithubUser = {
     id: number;
     name: string;
-}
+};
 
 export async function registerUserOnSignUp(parsedForm: SignUpSchema): Promise<UserCreated> {
     const salt = generateSalt();
@@ -41,7 +41,7 @@ export async function registerUserOnSignUp(parsedForm: SignUpSchema): Promise<Us
 }
 
 export async function getUserByEmail(email: string): Promise<User | null> {
-    const res = await fetch(`${BACKEND_API_URL}/users?email=${email}`);
+    const res = await fetch(`${BACKEND_API_URL}/users/email/${email}`);
     if (!res.ok) {
         return null;
     }
@@ -83,8 +83,16 @@ export async function getGithubUser(code: string) {
     return user;
 }
 
-export async function getUserbyGithubId(githubId: number) {
-    const res = await fetch(`${BACKEND_API_URL}/users?github_id=${githubId}`);
+export async function getUserByGithubId(githubId: number) {
+    const res = await fetch(`${BACKEND_API_URL}/users/github/${githubId}`);
+    if (!res.ok) {
+        return null;
+    }
+    return await res.json();
+}
+
+export async function getUserById(id: number) {
+    const res = await fetch(`${BACKEND_API_URL}/users/id/${id}`);
     if (!res.ok) {
         return null;
     }
@@ -93,7 +101,7 @@ export async function getUserbyGithubId(githubId: number) {
 
 export async function registerUserOnGithubLogin(githubUser: GithubUser): Promise<UserCreated> {
     const payload = JSON.stringify({github_id: githubUser.id, github_name: githubUser.name});
-    console.log(payload)
+    console.log(payload);
     const res = await fetch(`${BACKEND_API_URL}/users`, {
         method: "POST",
         body: payload,
