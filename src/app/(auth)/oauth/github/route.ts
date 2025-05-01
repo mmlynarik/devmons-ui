@@ -1,5 +1,4 @@
-import { JWT_SESSION_EXP_SECONDS } from "@/config";
-import {createJWTSession} from "@/lib/auth/jwtSession";
+import {createJWTSession, setJWTSessionHeader} from "@/lib/auth/jwtSession";
 import {getGithubUser, getUserbyGithubId, registerUserOnGithubLogin} from "@/lib/auth/user";
 import {redirect} from "next/navigation";
 import {type NextRequest} from "next/server";
@@ -16,7 +15,8 @@ export async function GET(request: NextRequest) {
     if (!user) {
         user = await registerUserOnGithubLogin(githubUser);
     }
-    await createJWTSession(user.id, "vce", JWT_SESSION_EXP_SECONDS);
+    const {access_token, refresh_token} = await createJWTSession(user.id);
+    await setJWTSessionHeader(access_token, refresh_token);
     console.log(`User with id=${user.id} logged in`);
 
     redirect("/dashboard");

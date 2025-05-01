@@ -1,12 +1,12 @@
 "use server";
 
-import { GITHUB_AUTHORIZE_URL, JWT_SESSION_EXP_SECONDS } from "@/config";
-import { redirect } from "next/navigation";
-import { createJWTSession } from "../auth/jwtSession";
-import { verifyPassword } from "../auth/passwordHasher";
-import { getUserByEmail } from "../auth/user";
-import { loginSchema } from "../schemas/login";
-import { getFieldsFromFormData } from "../utils";
+import {GITHUB_AUTHORIZE_URL} from "@/config";
+import {redirect} from "next/navigation";
+import {createJWTSession, setJWTSessionHeader} from "../auth/jwtSession";
+import {verifyPassword} from "../auth/passwordHasher";
+import {getUserByEmail} from "../auth/user";
+import {loginSchema} from "../schemas/login";
+import {getFieldsFromFormData} from "../utils";
 
 type FormState = {
     success: boolean;
@@ -34,7 +34,8 @@ export async function loginAction(_: FormState, formData: FormData): Promise<For
         return {success: false, errors: {root: ["Incorrect email or password"]}};
     }
 
-    await createJWTSession(user.id, "vce", JWT_SESSION_EXP_SECONDS);
+    const {access_token, refresh_token} = await createJWTSession(user.id);
+    await setJWTSessionHeader(access_token, refresh_token);
     console.log(`User ${user.email} logged in`);
 
     redirect("/dashboard");

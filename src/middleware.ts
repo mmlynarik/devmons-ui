@@ -1,6 +1,6 @@
-import { verifyJWT } from "@/lib/auth/jwtSession";
-import { cookies } from "next/headers";
-import { NextRequest, NextResponse } from "next/server";
+import {verifyJWT} from "@/lib/auth/jwtSession";
+import {cookies} from "next/headers";
+import {NextRequest, NextResponse} from "next/server";
 
 const protectedRoutes = ["/dashboard"];
 const publicRoutes = ["/login", "/signup", "/"];
@@ -10,7 +10,7 @@ export default async function middleware(req: NextRequest) {
     const isProtectedRoute = protectedRoutes.includes(path);
     const isPublicRoute = publicRoutes.includes(path);
 
-    const access_token = (await cookies()).get("access_token")?.value;
+    const access_token = (await cookies()).get("access")?.value;
 
     if (!access_token || !(await verifyJWT(access_token))) {
         if (isProtectedRoute) {
