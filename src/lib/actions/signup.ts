@@ -32,7 +32,7 @@ export async function signUpAction(formState: FormState, formData: FormData): Pr
 }
 
 export async function checkEmailAvailable(email: string) {
-    const res = await fetch(`${BACKEND_API_URL}/users/${email}`);
+    const res = await fetch(`${BACKEND_API_URL}/users/email/${email}`);
     if (res.ok) {
         console.log(`User with email ${email} already exists`);
         return false;

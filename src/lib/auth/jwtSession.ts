@@ -5,7 +5,7 @@ import {
     JWT_SECRET_KEY,
 } from "@/config";
 import { JWTPrivateClaims, jwtSchema } from "@/lib/schemas/jwt";
-import { SignJWT, jwtVerify } from "jose";
+import { JWTPayload, SignJWT, jwtVerify } from "jose";
 import { cookies } from "next/headers";
 import "server-only";
 
@@ -24,9 +24,16 @@ export async function verifyJWT(token: string) {
     return (await jwtVerify(token, JWT_SECRET_KEY_ENCODED, {algorithms: ["HS256"]})).payload;
 }
 
-export async function verifyAndValidateJWT(token: string): Promise<boolean> {
-    const payload = (await jwtVerify(token, JWT_SECRET_KEY_ENCODED, {algorithms: ["HS256"]})).payload;
-    return (await jwtSchema.safeParseAsync(payload)).success;
+export async function validateJWT(payload: JWTPayload) {
+    return await jwtSchema.safeParseAsync(payload)
+}
+
+export async function IsJWTOk(token: string | undefined): Promise<boolean> {
+    if (!token) {
+        return false
+    }
+    const payload = await verifyJWT(token);
+    return (await validateJWT(payload)).success;
 }
 
 export async function createJWTSession(userId: number) {
@@ -36,7 +43,7 @@ export async function createJWTSession(userId: number) {
     const access_token = await getSignedJWT({userId}, accessTokenExpiryDate);
     const refresh_token = await getSignedJWT({userId}, refreshTokenExpiryDate);
 
-    return {access_token, refresh_token}
+    return {access_token, refresh_token};
 }
 
 export async function setJWTSessionHeader(access_token: string, refresh_token: string | undefined) {

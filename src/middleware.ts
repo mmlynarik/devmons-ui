@@ -1,4 +1,4 @@
-import {verifyAndValidateJWT} from "@/lib/auth/jwtSession";
+import {IsJWTOk} from "@/lib/auth/jwtSession";
 import {cookies} from "next/headers";
 import {NextRequest, NextResponse} from "next/server";
 
@@ -11,16 +11,13 @@ export default async function middleware(req: NextRequest) {
     const isPublicRoute = publicRoutes.includes(path);
 
     const access_token = (await cookies()).get("access")?.value;
+    const jwtOK = await IsJWTOk(access_token);
 
-    if (!access_token || !(await verifyAndValidateJWT(access_token))) {
-        if (isProtectedRoute) {
-            return NextResponse.redirect(new URL("/login", req.nextUrl));
-        }
+    if (isProtectedRoute && !jwtOK) {
+        return NextResponse.redirect(new URL("/login", req.nextUrl));
     }
-    if (access_token && (await verifyAndValidateJWT(access_token))) {
-        if (isPublicRoute) {
-            return NextResponse.redirect(new URL("/dashboard", req.nextUrl));
-        }
+    if (isPublicRoute && jwtOK) {
+        return NextResponse.redirect(new URL("/dashboard", req.nextUrl));
     }
     return NextResponse.next();
 }
