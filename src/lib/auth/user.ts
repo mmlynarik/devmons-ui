@@ -32,7 +32,7 @@ export async function registerUserOnSignUp(parsedForm: SignUpSchema): Promise<Us
     const hashedPassword = await hashPassword(parsedForm.password, salt);
 
     const payload = JSON.stringify({email: parsedForm.email, password: hashedPassword, salt: salt});
-    const res = await fetch(`${BACKEND_API_URL}/users`, {
+    const res = await fetch(`${BACKEND_API_URL}/users/email`, {
         method: "POST",
         body: payload,
         headers: {"Content-Type": "application/json"},
@@ -102,7 +102,7 @@ export async function getUserById(id: number): Promise<User | null> {
 export async function registerUserOnGithubLogin(githubUser: GithubUser): Promise<UserCreated> {
     const payload = JSON.stringify({github_id: githubUser.id, github_name: githubUser.name});
     console.log(payload);
-    const res = await fetch(`${BACKEND_API_URL}/users`, {
+    const res = await fetch(`${BACKEND_API_URL}/users/github`, {
         method: "POST",
         body: payload,
         headers: {"Content-Type": "application/json"},
