@@ -24,8 +24,8 @@ export async function signUpAction(formState: FormState, formData: FormData): Pr
     }
 
     const user = await registerUserOnSignUp(parsed.data);
-    const {access_token, refresh_token} = await createJWTSession(user.id);
-    await setJWTSessionHeader(access_token, refresh_token)
+    const {accessToken, refreshToken} = await createJWTSession(user.id);
+    await setJWTSessionHeader(accessToken, refreshToken)
     console.log(`User with id=${user.id} logged in`);
 
     redirect("/dashboard");

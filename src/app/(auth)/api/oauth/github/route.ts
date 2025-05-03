@@ -7,13 +7,14 @@ export async function GET(request: NextRequest) {
     const queryParams = request.nextUrl.searchParams;
     const code = queryParams.get("code")!;
 
+    let user;
     const githubUser = await getGithubUser(code);
-    let user = await getUserByGithubId(githubUser.id);
+    user = await getUserByGithubId(githubUser.id);
     if (!user) {
         user = await registerUserOnGithubLogin(githubUser);
     }
-    const {access_token, refresh_token} = await createJWTSession(user.id);
-    await setJWTSessionHeader(access_token, refresh_token);
+    const {accessToken, refreshToken} = await createJWTSession(user.id);
+    await setJWTSessionHeader(accessToken, refreshToken);
     console.log(`User with id=${user.id} logged in`);
 
     redirect("/dashboard");

@@ -70,20 +70,20 @@ async function getGithubAccessToken(code: string): Promise<string> {
     return data.access_token;
 }
 
-async function getGithubUserFromToken(access_token: string) {
+async function getGithubUserFromToken(access_token: string): Promise<GithubUser> {
     const res = await fetch(GITHUB_USER_URL, {
         headers: {Authorization: `Bearer ${access_token}`},
     });
     return await res.json();
 }
 
-export async function getGithubUser(code: string) {
+export async function getGithubUser(code: string): Promise<GithubUser> {
     const access_token = await getGithubAccessToken(code);
     const user = await getGithubUserFromToken(access_token);
     return user;
 }
 
-export async function getUserByGithubId(githubId: number) {
+export async function getUserByGithubId(githubId: number): Promise<User | null> {
     const res = await fetch(`${BACKEND_API_URL}/users/github/${githubId}`);
     if (!res.ok) {
         return null;
@@ -91,7 +91,7 @@ export async function getUserByGithubId(githubId: number) {
     return await res.json();
 }
 
-export async function getUserById(id: number) {
+export async function getUserById(id: number): Promise<User | null> {
     const res = await fetch(`${BACKEND_API_URL}/users/id/${id}`);
     if (!res.ok) {
         return null;

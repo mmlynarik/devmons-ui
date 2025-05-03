@@ -1,4 +1,4 @@
-import {IsJWTOk} from "@/lib/auth/jwtSession";
+import {IsTokenOK, setJWTSessionHeader} from "@/lib/auth/jwtSession";
 import {cookies} from "next/headers";
 import {NextRequest, NextResponse} from "next/server";
 
@@ -10,13 +10,26 @@ export default async function middleware(req: NextRequest) {
     const isProtectedRoute = protectedRoutes.includes(path);
     const isPublicRoute = publicRoutes.includes(path);
 
-    const access_token = (await cookies()).get("access")?.value;
-    const jwtOK = await IsJWTOk(access_token);
+    const cookieStore = await cookies();
+    const access_token = cookieStore.get("access")?.value;
+    const authenticated = await IsTokenOK(access_token);
 
-    if (isProtectedRoute && !jwtOK) {
-        return NextResponse.redirect(new URL("/login", req.nextUrl));
+    if (isProtectedRoute && !authenticated) {
+        const token = cookieStore.get("refresh")?.value;
+        const res = await fetch(`${req.nextUrl.origin}/api/token/refresh`, {
+            method: "POST",
+            body: JSON.stringify({refreshToken: token}),
+            headers: {Accept: "application/json"},
+        });
+        if (!res.ok) {
+            return NextResponse.redirect(new URL("/login", req.nextUrl));
+        }
+        const {accessToken, refreshToken} = await res.json();
+        setJWTSessionHeader(accessToken, refreshToken);
+        console.log(`Access token ${refreshToken ? "and refresh token " : ""}refreshed`);
+        return NextResponse.next();
     }
-    if (isPublicRoute && jwtOK) {
+    if (isPublicRoute && authenticated) {
         return NextResponse.redirect(new URL("/dashboard", req.nextUrl));
     }
     return NextResponse.next();

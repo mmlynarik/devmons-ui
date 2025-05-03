@@ -21,18 +21,26 @@ export async function getSignedJWT(payload: JWTPrivateClaims, expiresAt: Date) {
 }
 
 export async function verifyJWT(token: string) {
-    return (await jwtVerify(token, JWT_SECRET_KEY_ENCODED, {algorithms: ["HS256"]})).payload;
+    try {
+        return (await jwtVerify(token, JWT_SECRET_KEY_ENCODED, {algorithms: ["HS256"]})).payload;
+    } catch (e) {
+        console.log(e);
+        return null;
+    }
 }
 
 export async function validateJWT(payload: JWTPayload) {
-    return await jwtSchema.safeParseAsync(payload)
+    return await jwtSchema.safeParseAsync(payload);
 }
 
-export async function IsJWTOk(token: string | undefined): Promise<boolean> {
+export async function IsTokenOK(token: string | undefined): Promise<boolean> {
     if (!token) {
-        return false
+        return false;
     }
     const payload = await verifyJWT(token);
+    if (!payload) {
+        return false;
+    }
     return (await validateJWT(payload)).success;
 }
 
@@ -40,13 +48,13 @@ export async function createJWTSession(userId: number) {
     const accessTokenExpiryDate = getTokenExpiryDate(JWT_ACCESS_TOKEN_EXPIRY_SECONDS);
     const refreshTokenExpiryDate = getTokenExpiryDate(JWT_REFRESH_TOKEN_EXPIRY_SECONDS);
 
-    const access_token = await getSignedJWT({userId}, accessTokenExpiryDate);
-    const refresh_token = await getSignedJWT({userId}, refreshTokenExpiryDate);
+    const accessToken = await getSignedJWT({userId}, accessTokenExpiryDate);
+    const refreshToken = await getSignedJWT({userId}, refreshTokenExpiryDate);
 
-    return {access_token, refresh_token};
+    return {accessToken, refreshToken};
 }
 
-export async function setJWTSessionHeader(access_token: string, refresh_token: string | undefined) {
+export async function setJWTSessionHeader(access_token: string, refresh_token: string | null = null) {
     const cookieStore = await cookies();
     cookieStore.set("access", access_token, {
         httpOnly: true,
