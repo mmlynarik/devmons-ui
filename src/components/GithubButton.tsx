@@ -10,7 +10,7 @@ export default function GithubButton() {
         <Button
             type="button"
             disabled={isPending}
-            className="w-full bg-gray-600 hover:bg-gray-700"
+            className="w-full bg-gray-600 transition hover:bg-gray-700"
             onClick={() => startTransition(githubLogin)}
         >
             <div className="flex items-center gap-3">
