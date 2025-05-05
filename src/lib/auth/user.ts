@@ -101,7 +101,6 @@ export async function getUserById(id: number): Promise<User | null> {
 
 export async function registerUserOnGithubLogin(githubUser: GithubUser): Promise<UserCreated> {
     const payload = JSON.stringify({github_id: githubUser.id, github_name: githubUser.name});
-    console.log(payload);
     const res = await fetch(`${BACKEND_API_URL}/users/github`, {
         method: "POST",
         body: payload,
