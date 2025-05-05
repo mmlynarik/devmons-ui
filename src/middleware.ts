@@ -36,8 +36,8 @@ async function authMiddleware(req: NextRequest) {
 }
 
 export default async function middleware(req: NextRequest) {
-    const res = authMiddleware(req)
-    return res
+    const res = authMiddleware(req);
+    return res;
 }
 
 // Routes on which middleware should not run
