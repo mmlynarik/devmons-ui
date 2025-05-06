@@ -58,7 +58,7 @@ export async function setJWTSessionHeader(access_token: string, refresh_token: s
     const cookieStore = await cookies();
     cookieStore.set("access", access_token, {
         httpOnly: true,
-        secure: true,
+        // secure: true,
         expires: getTokenExpiryDate(JWT_ACCESS_TOKEN_EXPIRY_SECONDS),
         sameSite: "lax",
         path: "/",
@@ -66,7 +66,7 @@ export async function setJWTSessionHeader(access_token: string, refresh_token: s
     if (refresh_token) {
         cookieStore.set("refresh", refresh_token, {
             httpOnly: true,
-            secure: true,
+            // secure: true,
             expires: getTokenExpiryDate(JWT_REFRESH_TOKEN_EXPIRY_SECONDS),
             sameSite: "lax",
             path: "/",
